@@ -26,6 +26,7 @@ final class OGDataCacheManager: NSObject {
     }()
     
     private(set) lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
+        objc_sync_enter(self)
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
         let url = self.applicationDocumentsDirectory.appendingPathComponent("URLEmbeddedViewOGData.sqlite")
         var failureReason = "There was an error creating or loading the application's saved data."
@@ -42,6 +43,7 @@ final class OGDataCacheManager: NSObject {
             NSLog("Unresolved error \(wrappedError), \(wrappedError.userInfo)")
             abort()
         }
+        objc_sync_exit(self)
         return coordinator
     }()
     
